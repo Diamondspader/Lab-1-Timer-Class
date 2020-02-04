@@ -110,11 +110,16 @@ TEST_CASE ("Output operator" )
 
 TEST_CASE ("Operator t1 + t2")
 {
-  Time t{12,12,31};
-  t++;
-  CHECK(t.to_string() == "12:12:32")
-  ++t;
-  CHECK(t.to_string() == "12:12:31");
+  Time t{12,12,35};
+  //t++;
+  t.sec_to_time(t.get_time_in_sec());
+  CHECK(t.get_time_in_sec() == 3600);
+  //++t;
+  CHECK(t.sec_to_time(t.get_time_in_sec()).to_string() == "12:12:31");
+
+  Time t1{1,1,1};
+  Time t3{};
+  t3 = t1 + 23;
 }
 #if 0
 
