@@ -30,7 +30,14 @@ public:
   Time sec_to_time(int second);
 
   operator std::string();
-  Time& operator + (const int& lhs);
+  Time operator +(const int& lhs);
+  Time operator -(const int& lhs);
+
+  Time& operator ++();
+  Time& operator --();
+
+  Time operator ++(int);
+  Time operator --(int);
 
 private:
   int h;

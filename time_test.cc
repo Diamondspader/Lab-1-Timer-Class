@@ -117,9 +117,17 @@ TEST_CASE ("Operator t1 + t2")
   //++t;
   CHECK(t.sec_to_time(t.get_time_in_sec()).to_string() == "12:12:31");
 
-  Time t1{1,1,1};
+  Time t1{23,59,59};
+  Time t2{1, 0, 0};
   Time t3{};
-  t3 = t1 + 23;
+  t3 = t1 + 3600*12;
+  CHECK(t3.to_string() == "1:1:23");
+  t3 = t2 - 3601;
+  CHECK(t3.to_string() == "1:1:23");
+  t3 = t1;
+  t1 = t3--;
+  CHECK(t3.to_string() == "1:1:23");
+  CHECK(t1.to_string() == "1:1:23");
 }
 #if 0
 

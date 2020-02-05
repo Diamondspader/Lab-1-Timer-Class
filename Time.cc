@@ -84,14 +84,19 @@ Time::operator std::string()
 
 bool set_range(const int& max, const int& min, const int& x)
 {
-  return (x>max || x<min);
+  return (x<min || x>max);
 }
 
+//omvandlar sekunder till 24h format
 Time Time::sec_to_time(int second)
 {
   Time t{};
 
-  t.set_hour(second / 3600);
+  if(second < 0)
+  {
+    second = 3600*24 + second;
+  }
+  t.set_hour((second / 3600) % 24);
   second = second % 3600;
   t.set_minute(second / 60);
   second = second % 60;
@@ -100,14 +105,53 @@ Time Time::sec_to_time(int second)
   return t;
 }
 
-Time& Time::operator + (const int& lhs)
+//objekt på vänstra sidan av operatorn, rhs = right hand side
+Time Time::operator +(const int& rhs)
 {
   Time t{};
   int add{};
 
-  add = lhs + this->get_time_in_sec();
+  add = rhs + this->get_time_in_sec();
   t = sec_to_time(add);
 
+  return t;
+}
+
+//objekt på vänstra sidan av operatorn, rhs = right hand side
+Time Time::operator -(const int& rhs)
+{
+  Time t{};
+  int sub{};
+
+  sub = this->get_time_in_sec() - rhs;
+  t = sec_to_time(sub);
+
+  return t;
+}
+
+Time& Time::operator ++()
+{
+  *this = *this + 1;
+  return *this;
+}
+
+Time& Time::operator --()
+{
+  *this = *this - 1;
+  return *this;
+}
+
+Time Time::operator ++(int)
+{
+  Time t{*this};
+  *this = *this + 1;
+  return t;
+}
+
+Time Time::operator --(int)
+{
+  Time t{*this};
+  *this = *this - 1;
   return t;
 }
 
