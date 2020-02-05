@@ -124,10 +124,14 @@ TEST_CASE ("Operator t1 + t2")
   CHECK(t3.to_string() == "1:1:23");
   t3 = t2 - 3601;
   CHECK(t3.to_string() == "1:1:23");
-  t3 = t1;
-  t1 = t3--;
+  t1 = t2;
+  t3 = t2 + 3600;
   CHECK(t3.to_string() == "1:1:23");
   CHECK(t1.to_string() == "1:1:23");
+
+  CHECK_FALSE((t1>=t3) == true);
+  CHECK_FALSE((t1<=t3) == true);
+  CHECK_FALSE((t1!=t3) == true);
 }
 #if 0
 

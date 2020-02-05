@@ -39,6 +39,13 @@ public:
   Time operator ++(int);
   Time operator --(int);
 
+  bool operator <(const Time& rhs);
+  bool operator >(Time& rhs);
+  bool operator ==(const Time& rhs);
+  bool operator >=(Time& rhs);
+  bool operator <=(Time& rhs);
+  bool operator !=(Time& rhs);
+
 private:
   int h;
   int m;

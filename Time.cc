@@ -92,10 +92,7 @@ Time Time::sec_to_time(int second)
 {
   Time t{};
 
-  if(second < 0)
-  {
-    second = 3600*24 + second;
-  }
+  second = second % (3600*24);
   t.set_hour((second / 3600) % 24);
   second = second % 3600;
   t.set_minute(second / 60);
@@ -129,6 +126,7 @@ Time Time::operator -(const int& rhs)
   return t;
 }
 
+//*this = an object of the class, this = pointer of the object
 Time& Time::operator ++()
 {
   *this = *this + 1;
@@ -153,6 +151,36 @@ Time Time::operator --(int)
   Time t{*this};
   *this = *this - 1;
   return t;
+}
+
+bool Time::operator <(const Time& rhs)
+{
+  return (this->get_time_in_sec() < rhs.get_time_in_sec());
+}
+
+bool Time::operator >(Time& rhs)
+{
+  return rhs < *this;
+}
+
+bool Time::operator ==(const Time& rhs)
+{
+  return this->get_time_in_sec() == rhs.get_time_in_sec();
+}
+
+bool Time::operator >=(Time& rhs)
+{
+  return (*this == rhs || *this > rhs);
+}
+
+bool Time::operator <=(Time& rhs)
+{
+  return (*this == rhs || *this < rhs);
+}
+
+bool Time::operator !=(Time& rhs)
+{
+  return !(*this == rhs);
 }
 
 std::ostream& operator<<(std::ostream& lhs,const Time& rhs)
