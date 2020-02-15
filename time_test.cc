@@ -139,6 +139,7 @@ TEST_CASE ("arithmetic operators")
 
   t2 = t2 + 86403;
   CHECK(t2.to_string() == "00:00:05");
+
   //Subtraction
   Time t3{0,0,0};
   t2 = t3 - 3;
