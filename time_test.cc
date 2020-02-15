@@ -34,6 +34,7 @@ TEST_CASE ( "Constructor with numeric arguments" )
     CHECK(t.hour() == 12);
     CHECK(t.minute() == 13);
     CHECK(t.second() == 14);
+
 }
 
 TEST_CASE ("Constructor with faulty argument")
@@ -78,6 +79,7 @@ TEST_CASE ("Conversion to string" )
     CHECK( string(Time{2,4,1}) == "02:04:01" );
 }
 
+//*DONE?* TODO: Testa också chained input.
 TEST_CASE ("Output operator" )
 {
     stringstream ss;
@@ -101,13 +103,102 @@ TEST_CASE ("Output operator" )
     }
     SECTION("simple input")
     {
+      ss.str("23:32:12");
+      Time t{};
+      ss >> t;
+      CHECK(t.to_string() == "23:32:12");
+      CHECK_FALSE(ss.fail());
+    }
+    SECTION("Chained input")
+    {
+      ss.str("23:12:12 22:13:13");
+      Time t1{};
+      Time t2{};
+      ss >> t1 >> t2;
+      CHECK(t1.to_string()=="23:12:12");
+      CHECK(t2.to_string()=="22:13:13");
+    }
+    SECTION("failed input")
+    {
       ss.str("23:60:12");
       Time t{};
       ss >> t;
-      CHECK(t.to_string() == "12:12:12");
+      CHECK(t.to_string() == "00:00:00");
+      CHECK(ss.fail());
     }
 }
 
+//*DONE* TODO: Ni testar inte om pre delen av inc/dec funkar.
+// TODO: Testa också så att +/- operatorn klarar sekunder > 86400 (över en dag)
+TEST_CASE ("arithmetic operators")
+{
+  //ADDITION
+  Time t1{23,59,59};
+  Time t2{};
+  t2 = t1 + 3;
+  CHECK(t2.to_string() == "00:00:02");
+
+  t2 = t2 + 86403;
+  CHECK(t2.to_string() == "00:00:05");
+  //Subtraction
+  Time t3{0,0,0};
+  t2 = t3 - 3;
+  CHECK(t2.to_string() == "23:59:57");
+
+//86400*20 = 1 728 000.   DVS -20 dagar + (- 1 sec)
+  t2 = t2 - 1728001;
+  CHECK(t2.to_string() == "23:59:56");
+
+  //PREINCREMENT
+  Time t9{23,59,57};
+  Time t4{++t9};
+  CHECK(t4.to_string() == "23:59:58");
+
+  //POSTINCREMENT
+  Time t5{23,59,57};
+  t1 = t5++;
+  CHECK(t1.to_string() == "23:59:57");
+  CHECK(t5.to_string() == "23:59:58");
+
+  //PREDECREMENT
+  Time t6{23,59,57};
+  Time t8{--t6};
+  CHECK(t8.to_string() == "23:59:56");
+
+  //POSTDECREMENT
+  Time t7{23,59,56};
+  t1 = t7--;
+  CHECK(t1.to_string() == "23:59:56");
+  CHECK(t7.to_string() == "23:59:55");
+}
+
+TEST_CASE (" Relational Operators")
+{
+
+
+  Time a{22,59,56};
+  Time b{22,59,57};
+  Time c{22,59,56};
+
+  CHECK(( a < b));
+  CHECK((b > a));
+  CHECK((a >= c));
+  CHECK((a <= c));
+  CHECK((a == c));
+  CHECK((a != b));
+
+  CHECK_FALSE(( a > b));
+  CHECK_FALSE((b < a));
+  CHECK_FALSE((a >= b));
+  CHECK_FALSE((b <= a));
+  CHECK_FALSE((a == b));
+  CHECK_FALSE((a != c));
+
+
+}
+#if 0
+
+#endif
 TEST_CASE ("Operator t1 + t2")
 {
   Time t{12,12,35};

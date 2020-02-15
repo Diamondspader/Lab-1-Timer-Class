@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
-
+hej
 bool Time::is_valid()
 {
   return  !(set_range(23, 0, hour())
