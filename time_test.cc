@@ -18,7 +18,6 @@ using namespace std;
 TEST_CASE ("Default constructor")
 {
     Time t;
-
     CHECK(t.hour() == 0);
     CHECK(t.minute() == 0);
     CHECK(t.second() == 0);

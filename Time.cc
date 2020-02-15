@@ -11,7 +11,7 @@ bool valid_range(const int& max, const int& min, const int& x)
   return (x>=min && x<=max);
 }
 
-bool Time::is_valid()
+bool Time::is_valid() const
 {
   return  (valid_range(23, 0, hour())
           && valid_range(59, 0, minute())
@@ -60,6 +60,7 @@ void Time::set_hour  (const int& hour)
     throw std::invalid_argument("invalid argument");
   }
 }
+
 void Time::set_minute(const int& minute)
 {
   if(valid_range(59,0, minute))
@@ -71,6 +72,7 @@ void Time::set_minute(const int& minute)
     throw std::invalid_argument("invalid argument");
   }
 }
+
 void Time::set_second(const int& second)
 {
   if(valid_range(59,0, second))
@@ -199,7 +201,7 @@ bool Time::operator <(const Time& rhs) const
   return (this->get_time_in_sec() < rhs.get_time_in_sec());
 }
 
-bool Time::operator >(Time& rhs) const
+bool Time::operator >(const Time& rhs) const
 {
   return rhs < *this;
 }
@@ -209,22 +211,23 @@ bool Time::operator ==(const Time& rhs) const
   return this->get_time_in_sec() == rhs.get_time_in_sec();
 }
 
-bool Time::operator >=(Time& rhs) const
+bool Time::operator >=(const Time& rhs) const
 {
   return (*this == rhs || *this > rhs);
 }
 
-bool Time::operator <=(Time& rhs) const
+bool Time::operator <=(const Time& rhs) const
 {
   return (*this == rhs || *this < rhs);
 }
 
-bool Time::operator !=(Time& rhs) const
+bool Time::operator !=(const Time& rhs) const
 {
   return !(*this == rhs);
 }
 
-//TODO: Använd to_string istället så borde ni inte behöva get_time_str(). *DONE*
+//TODO: Använd to_string istället så borde ni inte behöva get_time_str().
+//DONE
 std::ostream& operator<<(std::ostream& lhs, const Time& rhs)
 {
   Time t{rhs};

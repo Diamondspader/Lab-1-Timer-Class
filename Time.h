@@ -27,10 +27,13 @@ public:
   int get_time_in_sec() const { return (h*3600 + m*60 + s); }
 
   bool is_am() const;
+
   std::string to_string(bool am_pm = false) const;
+
   Time sec_to_time(int second);
 
   operator std::string();
+
   Time operator +(const int& lhs);
   Time operator -(const int& lhs);
 
@@ -41,32 +44,22 @@ public:
   Time operator --(int);
 
   bool operator <(const Time& rhs)  const;
-  bool operator >(Time& rhs)        const;
+  bool operator >(const Time& rhs)  const;
   bool operator ==(const Time& rhs) const;
-  bool operator >=(Time& rhs)       const;
-  bool operator <=(Time& rhs)       const;
-  bool operator !=(Time& rhs)       const;
+  bool operator >=(const Time& rhs) const;
+  bool operator <=(const Time& rhs) const;
+  bool operator !=(const Time& rhs) const;
 
 private:
   int h;
   int m;
   int s;
 
-//TODO: Värdet på denna sätts bara en gång?
-//Så fort användaren ändrar datumet så visar den fel värde.
-    // int time_in_sec{h*3600 + m*60 + s};
-
-//TODO: Värdet på denna sätts bara en gång?
-// (Se även kommentaren till output operatorn)
-//Så fort användaren ändrar datumet så visar den fel värde.
-
-  bool is_valid();
+  bool is_valid() const;
 
 };
 
 std::ostream& operator<<(std::ostream& temp, const Time& t);
 std::istream& operator>>(std::istream& temp, Time & t);
-
-
 
 #endif
