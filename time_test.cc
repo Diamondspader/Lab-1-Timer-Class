@@ -196,34 +196,8 @@ TEST_CASE (" Relational Operators")
 
 
 }
-#if 0
 
-#endif
-TEST_CASE ("Operator t1 + t2")
-{
-  Time t{12,12,35};
-  //t++;
-  t.sec_to_time(t.get_time_in_sec());
-  CHECK(t.get_time_in_sec() == 3600);
-  //++t;
-  CHECK(t.sec_to_time(t.get_time_in_sec()).to_string() == "12:12:31");
 
-  Time t1{23,59,59};
-  Time t2{1, 0, 0};
-  Time t3{};
-  t3 = t1 + 3600*12;
-  CHECK(t3.to_string() == "1:1:23");
-  t3 = t2 - 3601;
-  CHECK(t3.to_string() == "1:1:23");
-  t1 = t2;
-  t3 = t2 + 3600;
-  CHECK(t3.to_string() == "1:1:23");
-  CHECK(t1.to_string() == "1:1:23");
-
-  CHECK_FALSE((t1>=t3) == true);
-  CHECK_FALSE((t1<=t3) == true);
-  CHECK_FALSE((t1!=t3) == true);
-}
 #if 0
 
 #endif
