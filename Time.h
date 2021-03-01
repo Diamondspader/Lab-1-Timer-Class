@@ -1,35 +1,48 @@
-// Denna fil ska innehålla deklarationer för de typer och funktioner
-// som behövs
 #ifndef TIME_H
 #define TIME_H
 #include <string>
 #include <sstream>
 
+//TODO: Parametrar som inte modifieras ska vara const alt. const reference.
+//TODO: Alla funktioner som inte modifierar objektet som kallar på den
+//ska vara const.
+//TODO: Hjälpfunktioner ska vara privata.
+
+//DONE: Ändrat alla Parametrar som ska vara const till const alt const reference
+//DONE: Ändrat funktioner till const på de funktioner som inte modifierar objektet
+//DONE: Tagit bort onödiga funktioner & variabler
+//DONE: Begränsat set funktionerna
+//DONE: Flyttat ut hjälpfunktionen Valid_range till cc.filen, gjort om I/Ostream till friend
+//DONE: Lagt till fler testfall för att testa då tiden som adderas/subtraheras är över ett dygn
+//DONE: Fixat testfallen för pre inc/dec och lagt till ett testfall för chained input
+
+
 class Time
 {
 public:
-  class invalid{};
-
   Time();
-  Time(int hour, int minute, int second);
+  Time(int hour,int minute, int second);
   Time(std::string str);
 
-  int hour()const  { return h; }
+  int hour()  const{ return h; }
   int minute()const{ return m; }
   int second()const{ return s; }
 
-  void set_hour  (int hour)  { h = hour; }
-  void set_minute(int minute){ m = minute; }
-  void set_second(int second){ s = second; }
+  //TODO: Finns inga begränsningar på era set funktioner.
+  void set_hour  (const int& hour  );
+  void set_minute(const int& minute);
+  void set_second(const int& second);
 
-  int get_time_in_sec() const { return time_in_sec; }
-  std::string get_time_str()const{ return time_str; }
+  int get_time_in_sec() const { return (h*3600 + m*60 + s); }
 
-  bool is_am();
-  std::string to_string(bool am_pm = false);
+  bool is_am() const;
+
+  std::string to_string(bool am_pm = false) const;
+
   Time sec_to_time(int second);
 
   operator std::string();
+
   Time operator +(const int& lhs);
   Time operator -(const int& lhs);
 
@@ -39,29 +52,23 @@ public:
   Time operator ++(int);
   Time operator --(int);
 
-  bool operator <(const Time& rhs);
-  bool operator >(Time& rhs);
-  bool operator ==(const Time& rhs);
-  bool operator >=(Time& rhs);
-  bool operator <=(Time& rhs);
-  bool operator !=(Time& rhs);
+  bool operator <(const Time& rhs)  const;
+  bool operator >(const Time& rhs)  const;
+  bool operator ==(const Time& rhs) const;
+  bool operator >=(const Time& rhs) const;
+  bool operator <=(const Time& rhs) const;
+  bool operator !=(const Time& rhs) const;
+
+  friend std::ostream& operator<<(std::ostream& temp, const Time& t);
+  friend std::istream& operator>>(std::istream& temp, Time & t);
 
 private:
   int h;
   int m;
   int s;
 
-  int time_in_sec{h*3600 + m*60 + s};
+  bool is_valid() const;
 
-  std::string time_str{to_string()};
-
-
-  bool is_valid();
 };
-
-std::ostream& operator<<(std::ostream& temp,const Time& t);
-std::istream& operator>>(std::istream& temp, Time & t);
-
-bool set_range(const int& max, const int& min,const int& x);
 
 #endif
